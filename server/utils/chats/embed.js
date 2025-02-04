@@ -302,7 +302,7 @@ function findContextByText(text) {
   function traverse(node) {
     // Check if the current node's text matches the input
     if (node.text === text) {
-     
+
       return { context: node.context, id: node.id }; // Return both context and id
     }
     // Traverse the 'next' object if it exists
@@ -419,7 +419,7 @@ async function streamChatWithForEmbed(
     });
   } else {
 
- 
+
   // See stream.js comment for more information on this implementation.
   await new DocumentManager({
     workspace: embed.workspace,
@@ -560,7 +560,7 @@ async function streamChatWithForEmbed(
     sessionId,
   });
   return;
-} 
+}
 }
 
 /**

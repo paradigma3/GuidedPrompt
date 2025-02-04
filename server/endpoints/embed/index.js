@@ -25,13 +25,14 @@ function embeddedEndpoints(app) {
         const {
           sessionId,
           message,
+          guided = false, //added guided
           // optional keys for override of defaults if enabled.
           prompt = null,
           model = null,
           temperature = null,
           username = null,
         } = reqBody(request);
-
+        
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Content-Type", "text/event-stream");
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -43,6 +44,7 @@ function embeddedEndpoints(app) {
           model,
           temperature,
           username,
+          guided, //guided parameter
         });
         await Telemetry.sendTelemetry("embed_sent_chat", {
           multiUserMode: multiUserMode(response),

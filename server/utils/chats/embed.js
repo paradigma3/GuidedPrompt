@@ -7,7 +7,325 @@ const {
   writeResponseChunk,
 } = require("../helpers/chat/responses");
 const { DocumentManager } = require("../DocumentManager");
+const conversationDB1 = {
+  "conversation": {
+    "1": {
+      "id": "1",
+      "text": "Learn about our services",
+      "context": "Explore detailed information about the wide range of services we offer, specifically designed to empower businesses in the F&B, restaurant, and hotel management industries.",
+      "next": {
+        "1.1": {
+          "id": "1.1",
+          "text": "Service Overview",
+          "context": "Discover an in-depth overview of our specialized services that cater to the unique needs of F&B establishments, restaurant owners, and hotel management teams.",
+          "next": {
+            "1.1.1": {
+              "id": "1.1.1",
+              "text": "More about Service A",
+              "context": "Gain detailed insights into Service A, crafted to enhance operational efficiency and guest satisfaction in hotel and restaurant management.",
+              "next": {}
+            },
+            "1.1.2": {
+              "id": "1.1.2",
+              "text": "More about Service B",
+              "context": "Learn more about Service B, which provides innovative solutions for streamlining F&B operations and improving customer experiences.",
+              "next": {}
+            },
+            "1.1.3": {
+              "id": "1.1.3",
+              "text": "Industry Best Practices",
+              "context": "Access expert advice and best practices for optimizing operations in the hospitality and restaurant sectors.",
+              "next": {}
+            },
+            "1.1.4": {
+              "id": "1.1.4",
+              "text": "Case Studies",
+              "context": "Explore success stories from clients in the F&B and hotel management industries who have used our solutions.",
+              "next": {}
+            }
+          }
+        },
+        "1.2": {
+          "id": "1.2",
+          "text": "Pricing Information",
+          "context": "Access comprehensive details about our pricing models, which are tailored to suit businesses of all sizes in the hospitality and F&B sectors.",
+          "next": {
+            "1.2.1": {
+              "id": "1.2.1",
+              "text": "Subscription Plans",
+              "context": "Explore our flexible subscription plans designed to provide ongoing support and innovation for F&B and hotel management solutions.",
+              "next": {}
+            },
+            "1.2.2": {
+              "id": "1.2.2",
+              "text": "One-time Payment Details",
+              "context": "Understand the one-time payment options available for our services, ideal for businesses seeking immediate and efficient implementation of solutions.",
+              "next": {}
+            },
+            "1.2.3": {
+              "id": "1.2.3",
+              "text": "Custom Pricing for Enterprises",
+              "context": "Learn about custom pricing models available for large-scale hotel and F&B operations.",
+              "next": {}
+            },
+            "1.2.4": {
+              "id": "1.2.4",
+              "text": "Free Trial Information",
+              "context": "Check out our free trial options to experience the value of our services before committing.",
+              "next": {}
+            }
+          }
+        },
+        "1.3": {
+          "id": "1.3",
+          "text": "Specialized Tools & Features",
+          "context": "Learn about the advanced tools and features we provide, such as inventory management, reservation systems, and analytics dashboards.",
+          "next": {
+            "1.3.1": {
+              "id": "1.3.1",
+              "text": "Reservation Systems",
+              "context": "Discover our reservation system tools that help optimize table bookings and guest experiences.",
+              "next": {}
+            },
+            "1.3.2": {
+              "id": "1.3.2",
+              "text": "Inventory Management",
+              "context": "Learn about our inventory management solutions to ensure cost efficiency and reduce waste in F&B operations.",
+              "next": {}
+            },
+            "1.3.3": {
+              "id": "1.3.3",
+              "text": "Customer Analytics",
+              "context": "Gain insights into customer behavior through our advanced analytics tools to drive better decision-making.",
+              "next": {}
+            },
+            "1.3.4": {
+              "id": "1.3.4",
+              "text": "Integration with POS Systems",
+              "context": "Find out how our solutions integrate seamlessly with popular point-of-sale systems.",
+              "next": {}
+            }
+          }
+        }
+      }
+    },
+    "2": {
+      "id": "2",
+      "text": "How to get Started",
+      "context": "Find clear and concise guidance on how to begin leveraging our expertise to enhance your F&B or hotel management operations.",
+      "next": {
+        "2.1": {
+          "id": "2.1",
+          "text": "Sign-up Process",
+          "context": "Learn about the straightforward sign-up process to access our tailored solutions for the F&B and hospitality industries.",
+          "next": {}
+        },
+        "2.2": {
+          "id": "2.2",
+          "text": "Account Setup",
+          "context": "Receive detailed instructions on setting up your account to start benefiting from our cutting-edge services designed for restaurants and hotels.",
+          "next": {}
+        },
+        "2.3": {
+          "id": "2.3",
+          "text": "Team Onboarding",
+          "context": "Understand the onboarding process for your team to maximize the benefits of our solutions.",
+          "next": {}
+        },
+        "2.4": {
+          "id": "2.4",
+          "text": "Training and Resources",
+          "context": "Access training materials and resources to get your staff familiar with our tools and systems.",
+          "next": {}
+        }
+      }
+    },
+    "3": {
+      "id": "3",
+      "text": "Contact Support",
+      "context": "Discover the multiple ways you can get in touch with our dedicated support team to address any inquiries or technical issues related to your F&B or hotel management solutions.",
+      "next": {
+        "3.1": {
+          "id": "3.1",
+          "text": "FAQs",
+          "context": "Access frequently asked questions to quickly find answers to common queries about our services and solutions.",
+          "next": {}
+        },
+        "3.2": {
+          "id": "3.2",
+          "text": "Live Chat",
+          "context": "Start a real-time conversation with our support team to receive immediate assistance for your F&B or hotel management-related concerns.",
+          "next": {}
+        },
+        "3.3": {
+          "id": "3.3",
+          "text": "Email Support",
+          "context": "Send your inquiries via email to our support team and get detailed responses tailored to your needs.",
+          "next": {}
+        },
+        "3.4": {
+          "id": "3.4",
+          "text": "Schedule a Call",
+          "context": "Book a call with our experts for a one-on-one discussion about your specific requirements.",
+          "next": {}
+        }
+      }
+    }
+  }
+};
+const conversationDB = {
+  "conversation": {
+    "1": {
+      "id": "1",
+      "text": "Get Started",
+      "context": "Learn about our hotel and its amenities, services, and packages.",
+      "next": {
+        "1.1": {
+          "id": "1.1",
+          "text": "Welcome to [Hotel Name]",
+          "context": "A warm welcome from the team at [Hotel Name]. We’re here to help you plan your stay with us.",
+          "next": {}
+        },
+        "1.2": {
+          "id": "1.2",
+          "text": "Location",
+          "context": "Get directions to our hotel and learn more about its location along C5 Road, Taguig City, Philippines.",
+          "next": {
+            "1.2.1": {
+              "id": "1.2.1",
+              "text": "How to Get Here",
+              "context": "Find out how to get to our hotel from your current location and learn about nearby landmarks and transportation options.",
+              "next": {}
+            },
+            "1.2.2": {
+              "id": "1.2.2",
+              "text": "Hotel Address",
+              "context": "Our address is [insert address]. We’re located near [insert nearby landmarks].",
+              "next": {}
+            }
+          }
+        },
+        "1.3": {
+          "id": "1.3",
+          "text": "Room Types",
+          "context": "Find out about the different types of rooms we offer, including single, double, and suite options.",
+          "next": {
+            "1.3.1": {
+              "id": "1.3.1",
+              "text": "Single Room",
+              "context": "Our single room is equipped with a [insert amenities]. Rates start at [insert rate].",
+              "next": {}
+            },
+            "1.3.2": {
+              "id": "1.3.2",
+              "text": "Double Room",
+              "context": "Our double room is equipped with two beds and [insert amenities]. Rates start at [insert rate].",
+              "next": {}
+            },
+            "1.3.3": {
+              "id": "1.3.3",
+              "text": "Suite",
+              "context": "Enjoy the ultimate luxury experience in our suite, equipped with [insert amenities] and a capacity for up to [insert capacity].",
+              "next": {}
+            }
+          }
+        },
+        "1.4": {
+          "id": "1.4",
+          "text": "Amenities and Services",
+          "context": "Discover the amenities and services we offer, including [insert list of amenities].",
+          "next": {
+            "1.4.1": {
+              "id": "1.4.1",
+              "text": "Dining Options",
+              "context": "Enjoy a meal at our on-site restaurant or grab something to go from our convenience store.",
+              "next": {}
+            },
+            "1.4.2": {
+              "id": "1.4.2",
+              "text": "Fitness Center",
+              "context": "Get fit with our state-of-the-art fitness center, open 24/7.",
+              "next": {}
+            }
+          }
+        },
+        "1.5": {
+          "id": "1.5",
+          "text": "Meeting and Event Spaces",
+          "context": "Learn about our meeting and event spaces, including conference rooms, banquet halls, and outdoor venues.",
+          "next": {
+            "1.5.1": {
+              "id": "1.5.1",
+              "text": "Conference Rooms",
+              "context": "Our conference rooms are equipped with [insert amenities] and can accommodate up to [insert capacity].",
+              "next": {}
+            },
+            "1.5.2": {
+              "id": "1.5.2",
+              "text": "Banquet Halls",
+              "context": "Our banquet halls are perfect for weddings, parties, and other events, with [insert amenities] and a capacity of up to [insert capacity].",
+              "next": {}
+            }
+          }
+        },
+        "1.6": {
+          "id": "1.6",
+          "text": "Event Packages",
+          "context": "Learn about our event packages and how to book an event with us, including contact information for our Banquet Specialist.",
+          "next": {
+            "1.6.1": {
+              "id": "1.6.1",
+              "text": "Event Details",
+              "context": "Provide the necessary details for your event, including type, number of guests, date and time, and contact information.",
+              "next": {}
+            },
+            "1.6.2": {
+              "id": "1.6.2",
+              "text": "Contact Us",
+              "context": "Get in touch with our Banquet Specialist to discuss your event needs and preferences.",
+              "next": {}
+            }
+          }
+        }
+      }
+    },
+    "2": {
+      "id": "1",
+      "text": "Test",
+      "context": null,
+      "next": {}
+    }
+  }
+}
 
+function findContextByText(text) {
+  function traverse(node) {
+    // Check if the current node's text matches the input
+    if (node.text === text) {
+     
+      return { context: node.context, id: node.id }; // Return both context and id
+    }
+    // Traverse the 'next' object if it exists
+    if (node.next) {
+      for (const key in node.next) {
+        const result = traverse(node.next[key]);
+        if (result) {
+          return result;
+        }
+      }
+    }
+    return null; // Return null if no match found in this branch
+  }
+
+  // Traverse the root level of the conversationDB
+  for (const key in conversationDB.conversation) {
+    const result = traverse(conversationDB.conversation[key]);
+    if (result) {
+      return result; // Return the context and id if a match is found
+    }
+  }
+  return null; // Return null if no match found in the entire conversationDB
+}
 async function streamChatWithForEmbed(
   response,
   /** @type {import("@prisma/client").embed_configs & {workspace?: import("@prisma/client").workspaces}} */
@@ -16,7 +334,7 @@ async function streamChatWithForEmbed(
   message,
   /** @type {String} */
   sessionId,
-  { promptOverride, modelOverride, temperatureOverride, username }
+  { promptOverride, modelOverride, temperatureOverride, username ,guided,gid} //added guided
 ) {
   const chatMode = embed.chat_mode;
   const chatModel = embed.allow_model_override ? modelOverride : null;
@@ -64,6 +382,44 @@ async function streamChatWithForEmbed(
     messageLimit
   );
 
+
+//==============================================================
+//==============================================================
+//=========================== TODO =============================
+//==============================================================
+//==============================================================
+// 1. Modify conversationDB to instead of using const conversationDB = {"conversation": {
+// - - Just use conversationDB.embed.id of  the chat. so we can control the source. Ramada,Novel,Mento, etc
+// 2. Accordingly update the findContextByTest to include embed.id ex.findContextByText(message,embed.id)
+  const contextResult = findContextByText(message);
+  const context = contextResult ? contextResult.context : null;
+  const contextId = contextResult ? contextResult.id : null;
+  // If guided is true, save the message but do not pass it to the LLM
+  if (guided) {
+    await EmbedChats.new({
+      embedId: embed.id,
+      prompt: message,
+      response: { text: context || "No Context for this guided prompt has been found. Embedding ID: "+embed.uuid, type: "guided", sources: [], metrics: {contextId} },
+      connection_information: response.locals.connection
+        ? {
+            ...response.locals.connection,
+            username: !!username ? String(username) : null,
+          }
+        : { username: !!username ? String(username) : null },
+      sessionId,
+    });
+
+    writeResponseChunk(response, {
+      id: uuid,
+      type: "textResponse",
+      textResponse: context || "No Context for this guided prompt has been found. Embedding ID: "+embed.uuid,
+      sources: [],
+      close: true,
+      error: null,
+    });
+  } else {
+
+ 
   // See stream.js comment for more information on this implementation.
   await new DocumentManager({
     workspace: embed.workspace,
@@ -204,6 +560,7 @@ async function streamChatWithForEmbed(
     sessionId,
   });
   return;
+} 
 }
 
 /**

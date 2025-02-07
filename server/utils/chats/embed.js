@@ -173,7 +173,7 @@ const conversationDB1 = {
     }
   }
 };
-const conversationDB = {
+const conversationDB2 = {
   "conversation": {
     "1": {
       "id": "1",
@@ -189,18 +189,19 @@ const conversationDB = {
         "1.2": {
           "id": "1.2",
           "text": "Location",
-          "context": "Get directions to our hotel and learn more about its location along C5 Road, Taguig City, Philippines.",
+          "context": "Thank you for your interest in Ramada by Wyndham Manila Central. We are located at Ongpin corner Paredes Streets, Binondo Manila, Philippines. We are right across from the famous Binondo Church. We’ve attached a map here for your reference!",
           "next": {
             "1.2.1": {
               "id": "1.2.1",
-              "text": "How to Get Here",
-              "context": "Find out how to get to our hotel from your current location and learn about nearby landmarks and transportation options.",
-              "next": {}
-            },
-            "1.2.2": {
-              "id": "1.2.2",
-              "text": "Hotel Address",
-              "context": "Our address is [insert address]. We’re located near [insert nearby landmarks].",
+              "text": "How to Get Here ",
+              "context": "Our address is [insert address], conveniently located near [insert nearby landmarks]. To help you find us easily, discover the best routes from your current location along with nearby landmarks and available transportation options.",
+              "Images": {
+                "0": {
+                  "name": "Hotel Location",
+                  "url": "https://du-lich.chudu24.com/f/m/2210/28/khach-san-ramada-by-wyndham-manila-central-0.png",
+                  "redirect": "https://www.google.com/maps/dir/?api=1&destination=Ramada+by+Wyndham+Manila+Central"
+                }
+              },
               "next": {}
             }
           }
@@ -297,7 +298,305 @@ const conversationDB = {
     }
   }
 }
-
+const conversationDB = {
+  "conversation": {
+    "1": {
+      "id": "1",
+      "text": "Get Started",
+      "context": "Learn about our hotel and its amenities, services, and packages.",
+      "widget_type": "img",
+      "widgets": {
+        "img": {
+          "0": {
+            "name": "Image Name",
+            "url": "",
+            "redirect": "redirect link if necessary"
+          }
+        }
+      },
+      "next": {
+        "1.1": {
+          "id": "1.1",
+          "text": "Welcome to [Hotel Name]",
+          "context": "A warm welcome from the team at [Hotel Name]. We’re here to help you plan your stay with us.",
+          "widget_type": "img",
+          "widgets": {
+            "img": {
+              "0": {
+                "name": "Image Name",
+                "url": "",
+                "redirect": "redirect link if necessary"
+              }
+            }
+          },
+          "next": {}
+        },
+        "1.2": {
+          "id": "1.2",
+          "text": "Location",
+          "context": "Thank you for your interest in Ramada by Wyndham Manila Central. We are located at Ongpin corner Paredes Streets, Binondo Manila, Philippines. We are right across from the famous Binondo Church. We’ve attached a map here for your reference!",
+          "widget_type": "iframe",
+          "widgets": {
+            "iframe": {
+              "0": {
+                "name": "Hotel Location",
+                "url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d682.5319132757329!2d120.97469933902148!3d14.600012711523165!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d4833ee18f8f%3A0x833d1b036c537460!2sRamada%20by%20Wyndham%20Manila%20Central!5e0!3m2!1sen!2sph!4v1738727046289!5m2!1sen!2sph",
+                "redirect": "redirect link if necessary"
+              }
+            }
+          },
+          "next": {
+            "1.2.1": {
+              "id": "1.2.1",
+              "text": "How to Get Here",
+              "context": "Our address is [insert address], conveniently located near [insert nearby landmarks]. To help you find us easily, discover the best routes from your current location along with nearby landmarks and available transportation options.",
+              "widget_type": "iframe",
+              "widgets": {
+                "img": {
+                  "0": {
+                    "name": "Hotel Location",
+                    "url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d682.5319132757329!2d120.97469933902148!3d14.600012711523165!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d4833ee18f8f%3A0x833d1b036c537460!2sRamada%20by%20Wyndham%20Manila%20Central!5e0!3m2!1sen!2sph!4v1738727046289!5m2!1sen!2sph",
+                    "url2": "https://du-lich.chudu24.com/f/m/2210/28/khach-san-ramada-by-wyndham-manila-central-0.png",
+                    "redirect": "https://www.google.com/maps/dir/?api=1&destination=Ramada+by+Wyndham+Manila+Central"
+                  }
+                }
+              },
+              "next": {}
+            }
+          }
+        },
+        "1.3": {
+          "id": "1.3",
+          "text": "Room Types",
+          "context": "Find out about the different types of rooms we offer, including single, double, and suite options.",
+          "widget_type": "img",
+          "widgets": {
+            "img": {
+              "0": {
+                "name": "Image Name",
+                "url": "",
+                "redirect": "redirect link if necessary"
+              }
+            }
+          },
+          "next": {
+            "1.3.1": {
+              "id": "1.3.1",
+              "text": "Single Room",
+              "context": "Our single room is equipped with a [insert amenities]. Rates start at [insert rate].",
+              "widget_type": "img",
+              "widgets": {
+                "img": {
+                  "0": {
+                    "name": "Image Name",
+                    "url": "",
+                    "redirect": "redirect link if necessary"
+                  }
+                }
+              },
+              "next": {}
+            },
+            "1.3.2": {
+              "id": "1.3.2",
+              "text": "Double Room",
+              "context": "Our double room is equipped with two beds and [insert amenities]. Rates start at [insert rate].",
+              "widget_type": "img",
+              "widgets": {
+                "img": {
+                  "0": {
+                    "name": "Image Name",
+                    "url": "",
+                    "redirect": "redirect link if necessary"
+                  }
+                }
+              },
+              "next": {}
+            },
+            "1.3.3": {
+              "id": "1.3.3",
+              "text": "Suite",
+              "context": "Enjoy the ultimate luxury experience in our suite, equipped with [insert amenities] and a capacity for up to [insert capacity].",
+              "widget_type": "img",
+              "widgets": {
+                "img": {
+                  "0": {
+                    "name": "Image Name",
+                    "url": "",
+                    "redirect": "redirect link if necessary"
+                  }
+                }
+              },
+              "next": {}
+            }
+          }
+        },
+        "1.4": {
+          "id": "1.4",
+          "text": "Amenities and Services",
+          "context": "Discover the amenities and services we offer, including [insert list of amenities].",
+          "widget_type": "img",
+          "widgets": {
+            "img": {
+              "0": {
+                "name": "Image Name",
+                "url": "",
+                "redirect": "redirect link if necessary"
+              }
+            }
+          },
+          "next": {
+            "1.4.1": {
+              "id": "1.4.1",
+              "text": "Dining Options",
+              "context": "Enjoy a meal at our on-site restaurant or grab something to go from our convenience store.",
+              "widget_type": "img",
+              "widgets": {
+                "img": {
+                  "0": {
+                    "name": "Image Name",
+                    "url": "",
+                    "redirect": "redirect link if necessary"
+                  }
+                }
+              },
+              "next": {}
+            },
+            "1.4.2": {
+              "id": "1.4.2",
+              "text": "Fitness Center",
+              "context": "Get fit with our state-of-the-art fitness center, open 24/7.",
+              "widget_type": "img",
+              "widgets": {
+                "img": {
+                  "0": {
+                    "name": "Image Name",
+                    "url": "",
+                    "redirect": "redirect link if necessary"
+                  }
+                }
+              },
+              "next": {}
+            }
+          }
+        },
+        "1.5": {
+          "id": "1.5",
+          "text": "Meeting and Event Spaces",
+          "context": "Learn about our meeting and event spaces, including conference rooms, banquet halls, and outdoor venues.",
+          "widget_type": "img",
+          "widgets": {
+            "img": {
+              "0": {
+                "name": "Image Name",
+                "url": "",
+                "redirect": "redirect link if necessary"
+              }
+            }
+          },
+          "next": {
+            "1.5.1": {
+              "id": "1.5.1",
+              "text": "Conference Rooms",
+              "context": "Our conference rooms are equipped with [insert amenities] and can accommodate up to [insert capacity].",
+              "widget_type": "img",
+              "widgets": {
+                "img": {
+                  "0": {
+                    "name": "Image Name",
+                    "url": "",
+                    "redirect": "redirect link if necessary"
+                  }
+                }
+              },
+              "next": {}
+            },
+            "1.5.2": {
+              "id": "1.5.2",
+              "text": "Banquet Halls",
+              "context": "Our banquet halls are perfect for weddings, parties, and other events, with [insert amenities] and a capacity of up to [insert capacity].",
+              "widget_type": "img",
+              "widgets": {
+                "img": {
+                  "0": {
+                    "name": "Image Name",
+                    "url": "",
+                    "redirect": "redirect link if necessary"
+                  }
+                }
+              },
+              "next": {}
+            }
+          }
+        },
+        "1.6": {
+          "id": "1.6",
+          "text": "Event Packages",
+          "context": "Learn about our event packages and how to book an event with us, including contact information for our Banquet Specialist.",
+          "widget_type": "img",
+          "widgets": {
+            "img": {
+              "0": {
+                "name": "Image Name",
+                "url": "",
+                "redirect": "redirect link if necessary"
+              }
+            }
+          },
+          "next": {
+            "1.6.1": {
+              "id": "1.6.1",
+              "text": "Event Details",
+              "context": "Provide the necessary details for your event, including type, number of guests, date and time, and contact information.",
+              "widget_type": "img",
+              "widgets": {
+                "img": {
+                  "0": {
+                    "name": "Image Name",
+                    "url": "",
+                    "redirect": "redirect link if necessary"
+                  }
+                }
+              },
+              "next": {}
+            },
+            "1.6.2": {
+              "id": "1.6.2",
+              "text": "Contact Us",
+              "context": "Get in touch with our Banquet Specialist to discuss your event needs and preferences.",
+              "widget_type": "img",
+              "widgets": {
+                "img": {
+                  "0": {
+                    "name": "Image Name",
+                    "url": "",
+                    "redirect": "redirect link if necessary"
+                  }
+                }
+              },
+              "next": {}
+            }
+          }
+        }
+      }
+    },
+    "2": {
+      "id": "2",
+      "text": "Test",
+      "context": null,
+      "widget_type": "img",
+      "widgets": {
+        "img": {
+          "0": {
+            "name": "Image Name",
+            "url": "",
+            "redirect": "redirect link if necessary"
+          }
+        }
+      },
+      "next": {}
+    }
+  }
+};
 function findContextByText(text) {
   function traverse(node) {
     // Check if the current node's text matches the input

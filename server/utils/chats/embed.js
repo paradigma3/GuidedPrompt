@@ -303,7 +303,7 @@ const conversationDB = {
     "1": {
       "id": "1",
       "text": "Get Started",
-      "context": "Learn about our hotel and its amenities, services, and packages.",
+      "context": "Learn about our hotel and its amenities, services, and packages",
       "widget_type": "img",
       "widgets": {
         "img": {
@@ -335,12 +335,13 @@ const conversationDB = {
           "id": "1.2",
           "text": "Location",
           "context": "Thank you for your interest in Ramada by Wyndham Manila Central. We are located at Ongpin corner Paredes Streets, Binondo Manila, Philippines. We are right across from the famous Binondo Church. We’ve attached a map here for your reference!",
-          "widget_type": "iframe",
+          "widget_type": "img",
           "widgets": {
-            "iframe": {
+            "img": {
               "0": {
                 "name": "Hotel Location",
-                "url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d682.5319132757329!2d120.97469933902148!3d14.600012711523165!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d4833ee18f8f%3A0x833d1b036c537460!2sRamada%20by%20Wyndham%20Manila%20Central!5e0!3m2!1sen!2sph!4v1738727046289!5m2!1sen!2sph",
+                "url": "",
+                "url2": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d682.5319132757329!2d120.97469933902148!3d14.600012711523165!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d4833ee18f8f%3A0x833d1b036c537460!2sRamada%20by%20Wyndham%20Manila%20Central!5e0!3m2!1sen!2sph!4v1738727046289!5m2!1sen!2sph",
                 "redirect": "redirect link if necessary"
               }
             }
@@ -352,7 +353,7 @@ const conversationDB = {
               "context": "Our address is [insert address], conveniently located near [insert nearby landmarks]. To help you find us easily, discover the best routes from your current location along with nearby landmarks and available transportation options.",
               "widget_type": "iframe",
               "widgets": {
-                "img": {
+                "iframe": {
                   "0": {
                     "name": "Hotel Location",
                     "url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d682.5319132757329!2d120.97469933902148!3d14.600012711523165!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d4833ee18f8f%3A0x833d1b036c537460!2sRamada%20by%20Wyndham%20Manila%20Central!5e0!3m2!1sen!2sph!4v1738727046289!5m2!1sen!2sph",
@@ -382,14 +383,34 @@ const conversationDB = {
           "next": {
             "1.3.1": {
               "id": "1.3.1",
-              "text": "Single Room",
-              "context": "Our single room is equipped with a [insert amenities]. Rates start at [insert rate].",
-              "widget_type": "img",
+              "text": "Superior Room",
+              "context": "Our superior room is equipped with a [insert amenities]. Rates start at [insert rate].",
+              "widget_type": "img_multi",
               "widgets": {
-                "img": {
+                "img_multi": {
                   "0": {
-                    "name": "Image Name",
-                    "url": "",
+                    "name": "Superior Room",
+                    "url": "https://www.ramadamanilacentral.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FSRSlide1.247246da.webp&w=3840&q=75",
+                    "redirect": "redirect link if necessary"
+                  },
+                  "1": {
+                    "name": "Deluxe Room",
+                    "url": "https://www.ramadamanilacentral.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FDeluxe2.aa8c793e.webp&w=1920&q=75",
+                    "redirect": "redirect link if necessary"
+                  },
+                  "2": {
+                    "name": "Executive Room",
+                    "url": "https://www.ramadamanilacentral.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FExecutive1.69e79d8b.webp&w=3840&q=75",
+                    "redirect": "redirect link if necessary"
+                  },
+                  "3": {
+                    "name": "Sleep Suite Room",
+                    "url": "https://www.ramadamanilacentral.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FSleep1.559c1013.jpg&w=3840&q=75",
+                    "redirect": "redirect link if necessary"
+                  },
+                  "4": {
+                    "name": "Suite Room",
+                    "url": "https://www.ramadamanilacentral.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FSuite4.0d9c9bbf.webp&w=3840&q=75",
                     "redirect": "redirect link if necessary"
                   }
                 }
@@ -398,8 +419,8 @@ const conversationDB = {
             },
             "1.3.2": {
               "id": "1.3.2",
-              "text": "Double Room",
-              "context": "Our double room is equipped with two beds and [insert amenities]. Rates start at [insert rate].",
+              "text": "Deluxe Room",
+              "context": "Our deluxe room is equipped with two beds and [insert amenities]. Rates start at [insert rate].",
               "widget_type": "img",
               "widgets": {
                 "img": {
@@ -414,8 +435,40 @@ const conversationDB = {
             },
             "1.3.3": {
               "id": "1.3.3",
-              "text": "Suite",
+              "text": "Executive Room",
               "context": "Enjoy the ultimate luxury experience in our suite, equipped with [insert amenities] and a capacity for up to [insert capacity].",
+              "widget_type": "img",
+              "widgets": {
+                "img": {
+                  "0": {
+                    "name": "Image Name",
+                    "url": "",
+                    "redirect": "redirect link if necessary"
+                  }
+                }
+              },
+              "next": {}
+            },
+            "1.3.4": {
+              "id": "1.3.4",
+              "text": "Sleep Suite Room",
+              "context": "Enjoy the ultimate luxury experience in our Sleep Suite Room, equipped with [insert amenities] and a capacity for up to [insert capacity].",
+              "widget_type": "img",
+              "widgets": {
+                "img": {
+                  "0": {
+                    "name": "Image Name",
+                    "url": "",
+                    "redirect": "redirect link if necessary"
+                  }
+                }
+              },
+              "next": {}
+            },
+            "1.3.5": {
+              "id": "1.3.5",
+              "text": "Suite Room",
+              "context": "Enjoy the ultimate luxury experience in our Suite Room, equipped with [insert amenities] and a capacity for up to [insert capacity].",
               "widget_type": "img",
               "widgets": {
                 "img": {
@@ -503,7 +556,7 @@ const conversationDB = {
                 "img": {
                   "0": {
                     "name": "Image Name",
-                    "url": "",
+                    "url": "https://www.ramadamanilacentral.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FCondessa1.17e9bf61.jpg&w=3840&q=75",
                     "redirect": "redirect link if necessary"
                   }
                 }
@@ -552,7 +605,7 @@ const conversationDB = {
                 "img": {
                   "0": {
                     "name": "Image Name",
-                    "url": "",
+                    "url": "https://www.ramadamanilacentral.com/Function/CalleRosario/RosarioBR1.jpg",
                     "redirect": "redirect link if necessary"
                   }
                 }

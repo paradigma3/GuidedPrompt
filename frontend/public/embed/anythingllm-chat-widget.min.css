@@ -39,3 +39,135 @@
   transform: rotate(-2deg) skewX(10deg); /* Apply rotation and skew */
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
 }
+
+
+/*multi image gallery*/
+/* multi image gallery */
+.gallery-container {
+  position: relative;
+  width: 300px; /* Increased width */
+  height: 180px; /* Increased height */
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.gallery-slider {
+  display: flex;
+  width: 500%; /* 5 images, 100% each */
+  animation: slide 10s infinite linear;
+}
+
+.gallery-item {
+  flex: 0 0 20%;
+  position: relative;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px 15px; /* Adjust padding for better spacing */
+  text-align: left; /* Ensures text stays left-aligned */
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0)); /* Gradient fades from black to transparent */
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  backdrop-filter: blur(1px);
+  border-radius: 0 0 10px 10px;
+  height: 65px; /* Ensure height for gradient visibility */
+}
+
+.gallery-caption span {
+  padding: 0; /* Removed extra padding */
+  margin: 0;
+  white-space: nowrap; /* Prevents wrapping */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@keyframes slide {
+  0% { transform: translateX(0%); }
+  20% { transform: translateX(0%); }
+  25% { transform: translateX(-20%); }
+  45% { transform: translateX(-20%); }
+  50% { transform: translateX(-40%); }
+  70% { transform: translateX(-40%); }
+  75% { transform: translateX(-60%); }
+  95% { transform: translateX(-60%); }
+  100% { transform: translateX(0%); }
+}
+
+
+
+/* This shit is ass */
+
+
+/* FAQ COLLAPSE/EXPAND STYLES */
+* {
+  box-sizing: border-box;
+}
+
+.faq-section {
+  max-height: 200px;
+  overflow-y: auto;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  position: relative;
+}
+
+.faq-section::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for WebKit browsers */
+}
+
+
+.faqanswer {
+  display: none;
+  width: 295px; /* Reduced to half */
+  background: #f8f8f8;
+  padding: 12px 15px;
+  border-left: 4px solid #bf6271;
+  border-radius: 5px;
+}
+
+.faqanswer p {
+  font-size: 14px;
+  line-height: 18px;
+  color: #333;
+}
+
+a.active {
+  font-weight: bold;
+}
+
+.togglefaq {
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+  padding: 10px 15px;
+  display: block;
+  border: 1px solid #d0d0d0;
+  width: 295px; /* Reduced to half */
+  margin-bottom: -1px;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.icon-toggle {
+  color: #bf6271; /* Match the border color */
+  margin-right: 10px;
+  font-size: 18px;
+  float: left;
+  font-weight: bold;
+}
+
+p {
+  margin: 0;
+  padding-bottom: 15px;
+}

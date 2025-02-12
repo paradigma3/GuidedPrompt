@@ -116,22 +116,45 @@
 }
 
 .faq-section {
-  max-height: 200px;
+  flex-grow: 1; /* Allow the section to grow and take remaining space */
   overflow-y: auto;
-  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #bf6271 #f8f8f8; /* For Firefox */
   position: relative;
 }
 
 .faq-section::-webkit-scrollbar {
-  display: none; /* Hide scrollbar for WebKit browsers */
+  width: 8px; /* Width of the scrollbar */
 }
 
+.faq-section::-webkit-scrollbar-track {
+  background: #f8f8f8; /* Background of the scrollbar track */
+}
+
+.faq-section::-webkit-scrollbar-thumb {
+  background-color: #bf6271; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Roundness of the scrollbar thumb */
+  border: 2px solid #f8f8f8; /* Padding around the scrollbar thumb */
+}
+
+.faq-section::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 20px; /* Adjust height as needed */
+  background: linear-gradient(to bottom, rgba(248, 248, 248, 0), rgba(248, 248, 248, 1)); /* Gradient fade effect */
+  pointer-events: none; /* Allow interactions with content below */
+}
 
 .faqanswer {
-  display: none;
-  width: 295px; /* Reduced to half */
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  width: 100%;
   background: #f8f8f8;
-  padding: 12px 15px;
+  padding: 0 15px; /* Remove vertical padding for transition */
   border-left: 4px solid #bf6271;
   border-radius: 5px;
 }
@@ -140,6 +163,7 @@
   font-size: 14px;
   line-height: 18px;
   color: #333;
+  padding: 12px 0; /* Add vertical padding to the paragraph instead */
 }
 
 a.active {
@@ -153,10 +177,14 @@ a.active {
   padding: 10px 15px;
   display: block;
   border: 1px solid #d0d0d0;
-  width: 295px; /* Reduced to half */
+  width: 100%; /* Take full width of the container */
   margin-bottom: -1px;
   border-radius: 5px;
   background: #fff;
+}
+
+.togglefaq.active + .faqanswer {
+  max-height: 500px; /* Temporarily large value to accommodate content */
 }
 
 .icon-toggle {
@@ -170,4 +198,29 @@ a.active {
 p {
   margin: 0;
   padding-bottom: 15px;
+}
+
+.faq-search {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #d0d0d0;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* Swipe in effect on FAQ view */
+@keyframes swipeIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.swipe-in {
+  animation: swipeIn 0.5s ease-out;
 }

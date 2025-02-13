@@ -55,6 +55,7 @@
 .gallery-slider {
   display: flex;
   width: 500%; /* 5 images, 100% each */
+  height: 100%; /* Full height for container */
   animation: slide 10s infinite linear;
 }
 
@@ -74,15 +75,15 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 10px 15px; /* Adjust padding for better spacing */
+  padding: 5px 10px; /* Adjust padding for better spacing */
   text-align: left; /* Ensures text stays left-aligned */
   background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0)); /* Gradient fades from black to transparent */
   color: white;
   font-size: 14px;
   font-weight: bold;
   backdrop-filter: blur(1px);
-  border-radius: 0 0 10px 10px;
-  height: 65px; /* Ensure height for gradient visibility */
+  border-radius: 0 0 5px 10px;
+  height: 35px; /* Ensure height for gradient visibility */
 }
 
 .gallery-caption span {
@@ -116,56 +117,98 @@
 }
 
 .faq-section {
-  flex-grow: 1; /* Allow the section to grow and take remaining space */
-  overflow-y: auto;
-  scrollbar-width: thin; /* For Firefox */
-  scrollbar-color: #bf6271 #f8f8f8; /* For Firefox */
+  flex-grow: 1;
   position: relative;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #bf6271 #f8f8f8;
+  padding-bottom: 10px;
 }
 
+.faq-shadow-top,
+.faq-shadow-bottom {
+  position: sticky;
+  left: 0;
+  right: 0;
+  height: 20px;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity 0.3s;
+}
+
+.faq-shadow-top {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), transparent);
+  opacity: 1;
+}
+
+.faq-shadow-bottom {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.1), transparent);
+  opacity: 1;
+}
+
+.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Scrollbar Customization */
 .faq-section::-webkit-scrollbar {
-  width: 8px; /* Width of the scrollbar */
+  width: 8px;
 }
 
 .faq-section::-webkit-scrollbar-track {
-  background: #f8f8f8; /* Background of the scrollbar track */
+  background: #f8f8f8;
 }
 
 .faq-section::-webkit-scrollbar-thumb {
-  background-color: #bf6271; /* Color of the scrollbar thumb */
-  border-radius: 10px; /* Roundness of the scrollbar thumb */
-  border: 2px solid #f8f8f8; /* Padding around the scrollbar thumb */
+  background-color: #bf6271;
+  border-radius: 10px;
+  border: 2px solid #f8f8f8;
 }
 
-.faq-section::after {
+/* This is stupid ahh */
+/* IT should be dynamic shadows */
+/* .faq-section::after {
   content: "";
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 20px; /* Adjust height as needed */
-  background: linear-gradient(to bottom, rgba(248, 248, 248, 0), rgba(248, 248, 248, 1)); /* Gradient fade effect */
-  pointer-events: none; /* Allow interactions with content below */
-}
+  height: 20px;
+  background: linear-gradient(to bottom, rgba(248, 248, 248, 0), rgba(248, 248, 248, 1));
+  pointer-events: none;
+} */
 
 .faqanswer {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-out;
   width: 100%;
-  background: #f8f8f8;
-  padding: 0 15px; /* Remove vertical padding for transition */
+  background: #fff3f5; /* Brighter pinkish background */
+  padding: 0 15px;
   border-left: 4px solid #bf6271;
   border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for a layered look */
 }
 
 .faqanswer p {
-  font-size: 14px;
-  line-height: 18px;
-  color: #333;
-  padding: 12px 0; /* Add vertical padding to the paragraph instead */
+  font-size: 15px;
+  line-height: 22px;
+  color: #444;
+  padding: 12px 0;
+  word-spacing: 2px; /* Improved word spacing */
+  font-family: 'Arial', sans-serif; /* Elegant serif font */
 }
-
+.faqanswer a {
+  color: #bf6271;
+  text-decoration: underline;
+  transition: color 0.3s;
+}
+.faqanswer a:hover {
+  color: #d94b6b; /* Slightly darker shade on hover */
+}
 a.active {
   font-weight: bold;
 }
@@ -173,14 +216,16 @@ a.active {
 .togglefaq {
   text-decoration: none;
   color: #333;
-  font-size: 14px;
+  font-size: 15px;
   padding: 10px 15px;
   display: block;
   border: 1px solid #d0d0d0;
-  width: 100%; /* Take full width of the container */
+  width: 100%;
   margin-bottom: -1px;
   border-radius: 5px;
   background: #fff;
+  font-family: 'Arial', sans-serif;
+  letter-spacing: 0.5px; /* Slightly increased letter spacing */
 }
 
 .togglefaq.active + .faqanswer {

@@ -3,6 +3,8 @@ name: anythingllm
 networks:
   anything-llm:
     driver: bridge
+  nginx-proxy-network:
+    external: true
 
 services:
   anything-llm:
@@ -27,5 +29,6 @@ services:
       - .env
     networks:
       - anything-llm
+      - nginx-proxy-network
     extra_hosts:
       - "host.docker.internal:host-gateway"

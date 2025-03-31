@@ -27,6 +27,9 @@ const { experimentalEndpoints } = require("./endpoints/experimental");
 const { browserExtensionEndpoints } = require("./endpoints/browserExtension");
 const { communityHubEndpoints } = require("./endpoints/communityHub");
 const { agentFlowEndpoints } = require("./endpoints/agentFlows");
+const { apiFaqEndpoints } = require("./endpoints/faq");
+
+
 const app = express();
 const apiRouter = express.Router();
 const FILE_LIMIT = "3GB";
@@ -63,6 +66,7 @@ experimentalEndpoints(apiRouter);
 developerEndpoints(app, apiRouter);
 communityHubEndpoints(apiRouter);
 agentFlowEndpoints(apiRouter);
+apiFaqEndpoints(apiRouter);
 
 // Externally facing embedder endpoints
 embeddedEndpoints(apiRouter);

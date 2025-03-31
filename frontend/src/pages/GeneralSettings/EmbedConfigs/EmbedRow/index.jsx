@@ -110,6 +110,14 @@ export default function EmbedRow({ embed }) {
             >
               Delete
             </button>
+            <button
+              onClick={() => {
+                window.location.href = paths.settings.embedFaqs(embed.uuid);
+              }}
+              className="font-medium text-blue-600 dark:text-blue-300 px-2 py-1 rounded-lg hover:bg-blue-50 hover:dark:bg-blue-800 hover:dark:bg-opacity-20"
+            >
+              Manage FAQs
+            </button>
           </>
         </td>
       </tr>
@@ -128,9 +136,9 @@ function ActiveDomains({ domainList }) {
   try {
     const domains = JSON.parse(domainList);
     return (
-      <div className="flex flex-col gap-y-2">
+      <div className="flex flex-col gap-y-2" >
         {domains.map((domain) => {
-          return <p className="font-mono !font-normal">{domain}</p>;
+          return <p key={domain} className="font-mono !font-normal">{domain}</p>;
         })}
       </div>
     );

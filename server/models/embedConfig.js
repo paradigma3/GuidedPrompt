@@ -16,43 +16,34 @@ const EmbedConfig = {
     "workspace_id",
   ],
 
-  new: async function (data, creatorId = null) {
+  new: async function (data = {}, userId = null) {
     try {
+      const validData = {};
+      for (const [key, value] of Object.entries(data)) {
+        if (!this.writable.includes(key)) continue;
+        validData[key] = validatedCreationData(value, key);
+      }
+
       const embed = await prisma.embed_configs.create({
         data: {
+          ...validData,
           uuid: v4(),
           enabled: true,
-          chat_mode: validatedCreationData(data?.chat_mode, "chat_mode"),
-          allowlist_domains: validatedCreationData(
-            data?.allowlist_domains,
-            "allowlist_domains"
-          ),
-          allow_model_override: validatedCreationData(
-            data?.allow_model_override,
-            "allow_model_override"
-          ),
-          allow_temperature_override: validatedCreationData(
-            data?.allow_temperature_override,
-            "allow_temperature_override"
-          ),
-          allow_prompt_override: validatedCreationData(
-            data?.allow_prompt_override,
-            "allow_prompt_override"
-          ),
-          max_chats_per_day: validatedCreationData(
-            data?.max_chats_per_day,
-            "max_chats_per_day"
-          ),
-          max_chats_per_session: validatedCreationData(
-            data?.max_chats_per_session,
-            "max_chats_per_session"
-          ),
-          createdBy: Number(creatorId) ?? null,
-          workspace: {
-            connect: { id: Number(data.workspace_id) },
-          },
+          chat_mode: validData.chat_mode || "query",
+          workspace_id: Number(data.workspace_id),
+          createdBy: userId ? Number(userId) : null,
         },
       });
+
+      // Create an empty FAQ collection for this embed
+      await prisma.fAQ.create({
+        data: {
+          embed_config_id: embed.id,
+          question: "Welcome FAQ",
+          answer: "This is your first FAQ. You can edit or delete it and add more FAQs as needed."
+        }
+      });
+
       return { embed, message: null };
     } catch (error) {
       console.error(error.message);

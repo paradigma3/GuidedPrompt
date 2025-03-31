@@ -1,6 +1,11 @@
 import { API_BASE } from "./constants";
 
 export default {
+  api: {  // <---------------------- THIS 'api' OBJECT WAS MISSING! ADD THIS SECTION
+    index: () => `/api`,
+    embed: `/api/embed-config`,
+    embedFaqs: `/api/embed-faqs`,
+  },       // <---------------------- END OF 'api' OBJECT
   home: () => {
     return "/";
   },
@@ -88,6 +93,12 @@ export default {
     },
     chats: () => {
       return "/settings/workspace-chats";
+    },
+    embedFaqsCollections: () => {
+      return `/settings/embed-faqs-collections`;
+    },
+    embedFaqs: (embedId) => {
+      return `/settings/embed-faqs-collections/${embedId}/faqs`;
     },
     llmPreference: () => {
       return "/settings/llm-preference";

@@ -78,7 +78,12 @@ const CommunityHubAuthentication = lazy(
 const CommunityHubImportItem = lazy(
   () => import("@/pages/GeneralSettings/CommunityHub/ImportItem")
 );
-
+const EmbedFaqs = lazy(
+  () => import("@/pages/GeneralSettings/EmbedFAQs")
+);
+const EmbedFaqsCollections = lazy(
+  () => import("@/pages/GeneralSettings/EmbedFaqsCollections")
+);
 export default function App() {
   return (
     <ThemeProvider>
@@ -170,6 +175,18 @@ export default function App() {
                     path="/settings/embed-config"
                     element={<AdminRoute Component={EmbedConfigSetup} />}
                   />
+                  <Route
+                    path="/settings/embed-faqs-collections" // New route for Embed FAQ Collections List Page
+                    element={<AdminRoute Component={EmbedFaqsCollections} />} // Use EmbedFaqsCollections component
+                  />
+                   <Route
+                     path="/settings/embed-faqs-collections/:embedId/faqs"
+                    element={<AdminRoute Component={EmbedFaqs} />}
+                  />
+                   {/* <Route
+                    path="/settings/embed-faqs"
+                    element={<AdminRoute Component={EmbedFaqs} />}
+                  /> */}
                   <Route
                     path="/settings/embed-chats"
                     element={<AdminRoute Component={EmbedChats} />}

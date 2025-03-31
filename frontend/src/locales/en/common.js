@@ -90,6 +90,8 @@ const TRANSLATIONS = {
     "vector-database": "Vector Database",
     embeds: "Chat Embed",
     "embed-chats": "Chat Embed History",
+    embedFaqsCollections: "Embed FAQ Collections",
+    "embed-faqs-collections": "Embed FAQ Collections",
     security: "Security",
     "event-logs": "Event Logs",
     privacy: "Privacy & Data",
@@ -502,7 +504,37 @@ const TRANSLATIONS = {
       at: "Sent At",
     },
   },
-
+  "embed-faqs": {
+    title: "Embed FAQs",
+    collectionsTitle: "Embed FAQ Collections",
+    collectionsDescription: "Manage FAQ Collections for your Embed Chats.",
+    description: "Manage Frequently Asked Questions for this Embed.",
+    newFaq: "New FAQ",
+    editFaq: "Edit FAQ",
+    createFaq: "Create New FAQ",
+    update: "Update FAQ",
+    create: "Create FAQ",
+    question: "Question",
+    answer: "Answer",
+    enterQuestion: "Enter question",
+    enterAnswer: "Enter answer",
+    noCollections: "No FAQ collections found",
+    createEmbedFirst: "Create an embed first to manage its FAQs",
+    table: {
+      question: "Question",
+      answer: "Answer",
+      embed: "Embed (Workspace)",
+      chats: "Chats"
+    },
+    tableCollections: {
+      embed: "Embed (Workspace)",
+      faqs: "FAQs"
+    },
+    manageFaqs: "Manage FAQs",
+    newFaqCollection: "New FAQ Collection",
+    createFaqCollection: "Create New FAQ Collection",
+    updateFaqCollection: "Update FAQ Collection",
+  },
   multi: {
     title: "Multi-User Mode",
     description:

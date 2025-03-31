@@ -22,7 +22,7 @@ import showToast from "@/utils/toast";
 import System from "@/models/system";
 import Option from "./MenuOption";
 import { CanViewChatHistoryProvider } from "../CanViewChatHistory";
-
+import { ListChecks } from "@phosphor-icons/react";
 export default function SettingsSidebar() {
   const { t } = useTranslation();
   const { logo } = useLogo();
@@ -339,6 +339,12 @@ const SidebarOptions = ({ user = null, t }) => (
             {
               btnText: t("settings.embeds"),
               href: paths.settings.embedSetup(),
+              flex: true,
+              roles: ["admin"],
+            },
+            {
+              btnText: t("settings.embed-faqs-collections"),
+              href: paths.settings.embedFaqsCollections(),
               flex: true,
               roles: ["admin"],
             },

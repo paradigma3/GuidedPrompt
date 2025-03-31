@@ -226,6 +226,37 @@ model cache_data {
   lastUpdatedAt DateTime  @default(now())
 }
 
+model FAQ {
+  id              Int          @id @default(autoincrement())
+  question        String
+  answer          String
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  embed_config_id Int
+  embed_config    embed_configs @relation(name: "EmbedConfigToFaqs", fields: [embed_config_id], references: [id])
+  suggestions     Suggestion[]
+  widgets         Widget[]
+}
+
+model Suggestion {
+  id      Int      @id @default(autoincrement())
+  type    String   // "redirect" | "message"
+  text    String
+  url     String?  // Optional for "message" type
+  faq_id  Int
+  faq     FAQ      @relation(fields: [faq_id], references: [id], onDelete: Cascade)
+}
+
+model Widget {
+  id      Int      @id @default(autoincrement())
+  type    String   // "iframe" | "gallery"
+  label   String?
+  url     String?  // For iframe type
+  images  String?  // JSON array of image URLs for gallery type
+  faq_id  Int
+  faq     FAQ      @relation(fields: [faq_id], references: [id], onDelete: Cascade)
+}
+
 model embed_configs {
   id                         Int           @id @default(autoincrement())
   uuid                       String        @unique
@@ -243,6 +274,7 @@ model embed_configs {
   createdAt                  DateTime      @default(now())
   workspace                  workspaces    @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
   embed_chats                embed_chats[]
+  faqs                       FAQ[]         @relation("EmbedConfigToFaqs")
   users                      users?        @relation(fields: [usersId], references: [id])
 }
 

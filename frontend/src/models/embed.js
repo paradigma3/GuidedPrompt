@@ -1,6 +1,6 @@
 import { API_BASE } from "@/utils/constants";
 import { baseHeaders } from "@/utils/request";
-
+import paths from "@/utils/paths"; // ADD THIS IMPORT - Import paths
 const Embed = {
   embeds: async () => {
     return await fetch(`${API_BASE}/embeds`, {
@@ -74,6 +74,19 @@ const Embed = {
         console.error(e);
         return { success: false, error: e.message };
       });
+  },
+  fetchFaqCollections: async () => {
+    try {
+      const res = await fetch(`/api/embed-faqs/collections`, {
+        method: "GET",
+        headers: baseHeaders(),
+      });
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      return await res.json();
+    } catch (error) {
+      console.error("Could not get embed FAQ collections", error);
+      return { collections: [], error: error.message };
+    }
   },
 };
 

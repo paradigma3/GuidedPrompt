@@ -6,6 +6,7 @@ import { X } from "@phosphor-icons/react";
  * @property {string} title - The title of the modal
  * @property {function} onClose - Function to close the modal
  * @property {string} className - Additional classes for the modal content
+ * @property {boolean} showCloseButton - Whether to show the close button in the header
  * @property {boolean} noPortal - (default: false) Used for creating sub-DOM modals that need to be rendered as a child element instead of a modal placed at the root
  * Note: This can impact the bg-overlay presentation due to conflicting DOM positions so if using this property you should
    double check it renders as desired.
@@ -15,7 +16,7 @@ import { X } from "@phosphor-icons/react";
  * @param {ModalWrapperProps} props - ModalWrapperProps to pass
  * @returns {import("react").ReactNode}
  */
-export default function ModalWrapper({ children, isOpen, title, onClose, className = "" }) {
+export default function ModalWrapper({ children, isOpen, title, onClose, className = "", showCloseButton = true }) {
   if (!isOpen) return null;
 
   return (
@@ -28,7 +29,7 @@ export default function ModalWrapper({ children, isOpen, title, onClose, classNa
                 {title}
               </h3>
             </div>
-            {onClose && (
+            {onClose && showCloseButton && (
               <button
                 onClick={onClose}
                 type="button"

@@ -2,12 +2,18 @@
   "embed-faqs": {
     "title": "FAQ Management",
     "description": "Manage frequently asked questions for your chat embed.",
+    "collectionsTitle": "Embed FAQ Collections",
+    "collectionsDescription": "Manage FAQ Collections for your Embed Chats.",
     "newFaq": "New FAQ",
-    "manageSuggestions": "Manage Suggestions",
-    "manageWidgets": "Manage Widgets",
+    "manageFaqs": "Manage FAQs",
+    "manageArticles": "Manage Articles",
     "table": {
       "question": "Question",
       "answer": "Answer"
+    },
+    "tableCollections": {
+      "embed": "Embed (Workspace)",
+      "faqs": "FAQs"
     },
     "currentSuggestions": "Current Suggestions",
     "noSuggestions": "No suggestions added yet",
@@ -32,7 +38,22 @@
     "galleryImages": "Gallery Images",
     "enterImageUrl": "Enter image URL and press Enter",
     "createEmbedFirst": "Create an embed first to manage its FAQs",
-    "noCollections": "No FAQ collections found"
+    "noCollections": "No FAQ collections found",
+    "articles": {
+      "enterTitle": "Enter article title",
+      "enterDescription": "Enter article description",
+      "addArticle": "Add Article",
+      "noArticles": "No articles added yet",
+      "maxLimitReached": "Maximum number of articles (3) reached",
+      "confirmDelete": "Are you sure you want to delete this article?",
+      "fetchError": "Failed to fetch articles",
+      "saveError": "Failed to save article",
+      "deleteError": "Failed to delete article",
+      "saveSuccess": "Article saved successfully",
+      "deleteSuccess": "Article deleted successfully",
+      "imageUrl": "Image URL",
+      "url": "Article URL"
+    }
   },
   "faqManagement": {
     "title": "FAQ Management",
@@ -70,5 +91,12 @@
       "updated": "Widgets updated successfully",
       "errorUpdating": "Error updating widgets"
     }
+  },
+  "common": {
+    "close": "Close",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit"
   }
 }

@@ -234,6 +234,134 @@ function apiFaqEndpoints(router) {
     }
   });
 
+  // Get embed articles for a specific embed config
+  router.get('/embed-faqs/:embedId/articles', async (req, res) => {
+    try {
+      const { embedId } = req.params;
+      const embedConfig = await prisma.embed_configs.findUnique({
+        where: { id: Number(embedId) },
+        include: { embed_articles: true }
+      });
+
+      if (!embedConfig) {
+        return res.status(404).json({ error: 'Embed config not found' });
+      }
+
+      return res.json(embedConfig.embed_articles);
+    } catch (error) {
+      console.error('Error fetching embed articles:', error);
+      return res.status(500).json({ error: 'Failed to fetch embed articles' });
+    }
+  });
+
+  // Create a new embed article
+  router.post('/embed-faqs/:embedId/articles', async (req, res) => {
+    try {
+      const { embedId } = req.params;
+      const { title, description, image_url, url } = req.body;
+      console.log('Request Body:', req.body);
+      // Validate required fields
+      if (!title || !description || !image_url || !url) {
+        return res.status(400).json({ error: `Missing required fields: ${!title ? 'title' : ''}${!description ? 'description' : ''}${!image_url ? 'image_url' : ''}${!url ? 'url' : ''}` });
+      }
+
+      // Check if embed config exists
+      const embedConfig = await prisma.embed_configs.findUnique({
+        where: { id: Number(embedId) },
+        include: { embed_articles: true }
+      });
+
+      if (!embedConfig) {
+        return res.status(404).json({ error: 'Embed config not found' });
+      }
+
+      // Check if max articles limit is reached
+      if (embedConfig.embed_articles.length >= 3) {
+        return res.status(400).json({ error: 'Maximum number of articles (3) reached' });
+      }
+
+      // Create new embed article
+      const newArticle = await prisma.embedArticle.create({
+        data: {
+          title,
+          description,
+          image_url,
+          url,
+          embed_config_id: Number(embedId)
+        }
+      });
+
+      return res.json(newArticle);
+    } catch (error) {
+      console.error('Error creating embed article:', error);
+      return res.status(500).json({ error: 'Failed to create embed article' });
+    }
+  });
+
+  // Update an embed article
+  router.put('/embed-faqs/:embedId/articles/:articleId', async (req, res) => {
+    try {
+      const { embedId, articleId } = req.params;
+      const { title, description, image_url, url } = req.body;
+
+      // Validate required fields
+      if (!title || !description || !image_url || !url) {
+        return res.status(400).json({ error: 'Missing required fields' });
+      }
+
+      // Check if article exists
+      const article = await prisma.embedArticle.findUnique({
+        where: { id: Number(articleId) }
+      });
+
+      if (!article) {
+        return res.status(404).json({ error: 'Article not found' });
+      }
+
+      // Update article
+      const updatedArticle = await prisma.embedArticle.update({
+        where: { id: Number(articleId) },
+        data: {
+          title,
+          description,
+          image_url,
+          url
+        }
+      });
+
+      return res.json(updatedArticle);
+    } catch (error) {
+      console.error('Error updating embed article:', error);
+      return res.status(500).json({ error: 'Failed to update embed article' });
+    }
+  });
+
+  // Delete an embed article
+  router.delete('/embed-faqs/:embedId/articles/:articleId', async (req, res) => {
+    try {
+      const { articleId } = req.params;
+
+      // Check if article exists
+      const article = await prisma.embedArticle.findUnique({
+        where: { id: Number(articleId) }
+      });
+
+      if (!article) {
+        return res.status(404).json({ error: 'Article not found' });
+      }
+
+      // Delete article
+      await prisma.embedArticle.delete({
+        where: { id: Number(articleId) }
+      });
+
+      return res.json({ success: true });
+    } catch (error) {
+      console.error('Error deleting embed article:', error);
+      return res.status(500).json({ error: 'Failed to delete embed article' });
+    }
+  });
+
   return router;
 }
 

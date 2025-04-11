@@ -64,6 +64,10 @@
  * @property {Function} deleteDocumentFromNamespace - Deletes a document from a specified namespace.
  * @property {Function} addDocumentToNamespace - Adds a document to a specified namespace.
  * @property {Function} performSimilaritySearch - Performs a similarity search in the namespace.
+ * @property {Function} addFaqToNamespace - Adds a FAQ to the vector database
+ * @property {Function} updateFaqInNamespace - Updates a FAQ in the vector database
+ * @property {Function} deleteFaqFromNamespace - Deletes a FAQ from the vector database
+ * @property {Function} searchFaqs - Searches for FAQs in the vector database
  */
 
 /**
@@ -74,6 +78,39 @@
  * @property {Function} embedTextInput - Embeds a single text input.
  * @property {Function} embedChunks - Embeds multiple chunks of text.
  */
+
+/**
+ * @typedef {Object} FaqVectorMetadata
+ * @property {number} faq_id - The ID of the FAQ in SQLite
+ * @property {number} embed_config_id - The embed config ID
+ * @property {string} question - The FAQ question
+ * @property {string} answer - The FAQ answer
+ * @property {string} type - Always 'faq'
+ */
+
+/**
+ * Gets the FAQ namespace for a specific embed config
+ * @param {number} embedConfigId - The embed config ID
+ * @returns {string} The namespace for FAQ vectors
+ */
+function getFaqNamespace(embedConfigId) {
+  return `faq_${embedConfigId}`;
+}
+
+/**
+ * Creates FAQ vector metadata
+ * @param {Object} faq - The FAQ object
+ * @returns {FaqVectorMetadata} The vector metadata
+ */
+function createFaqVectorMetadata(faq) {
+  return {
+    faq_id: faq.id,
+    embed_config_id: faq.embed_config_id,
+    question: faq.question,
+    answer: faq.answer,
+    type: 'faq'
+  };
+}
 
 /**
  * Gets the systems current vector database provider.
@@ -370,10 +407,12 @@ function toChunks(arr, size) {
 }
 
 module.exports = {
-  getEmbeddingEngineSelection,
-  maximumChunkLength,
   getVectorDbClass,
-  getLLMProviderClass,
   getLLMProvider,
+  getEmbeddingEngineSelection,
+  getLLMProviderClass,
+  maximumChunkLength,
   toChunks,
+  getFaqNamespace,
+  createFaqVectorMetadata
 };

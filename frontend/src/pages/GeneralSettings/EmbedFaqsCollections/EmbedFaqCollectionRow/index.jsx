@@ -16,12 +16,10 @@ export default function EmbedFaqCollectionRow({ collection, onManageArticles }) 
       >
         <div className="flex items-center">
           <a
-            href={paths.workspace.chat(collection.workspace.slug)} // Link to workspace chat
-            target="_blank"
-            rel="noreferrer"
+            href={paths.settings.embedFaqs(collection.uuid)}
             className="text-white flex items-center hover:underline"
           >
-            <LinkSimple className="mr-2 w-5 h-5" /> {collection.workspace.name}
+            <LinkSimple className="mr-2 w-5 h-5" /> {collection.name}
           </a>
           <p className="ml-2 text-theme-text-secondary text-xs">
             ID: {collection.uuid}
@@ -29,7 +27,7 @@ export default function EmbedFaqCollectionRow({ collection, onManageArticles }) 
         </div>
       </th>
       <td className="px-6 py-4">
-        {nFormatter(collection._count.faqs)}
+        {collection._count?.faqs ?? 0}
       </td>
       <td className="px-6 py-4 text-right flex items-center justify-end gap-x-2">
         <button

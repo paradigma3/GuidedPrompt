@@ -38,16 +38,21 @@ function embedManagementEndpoints(app) {
       try {
         const user = await userFromSession(request, response);
         const data = reqBody(request);
-        const { embed, message: error } = await EmbedConfig.new(data, user?.id);
+        const embed = await EmbedConfig.new(data, user?.id);
+
+        if (!embed) {
+          return response.status(400).json({ error: "Failed to create embed configuration" });
+        }
+
         await EventLogs.logEvent(
           "embed_created",
           { embedId: embed.id },
           user?.id
         );
-        response.status(200).json({ embed, error });
+        response.status(200).json({ embed, error: null });
       } catch (e) {
         console.error(e);
-        response.sendStatus(500).end();
+        response.status(500).json({ error: "Internal server error" });
       }
     }
   );

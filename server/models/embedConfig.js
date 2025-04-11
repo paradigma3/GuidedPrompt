@@ -1,6 +1,7 @@
 const { v4 } = require("uuid");
 const prisma = require("../utils/prisma");
 const { VALID_CHAT_MODE } = require("../utils/chats/stream");
+const { FAQ } = require("./faq");
 
 const EmbedConfig = {
   writable: [
@@ -17,6 +18,7 @@ const EmbedConfig = {
   ],
 
   new: async function (data = {}, userId = null) {
+    console.log(`[EmbedConfig] Creating new embed config with data:`, data);
     try {
       const validData = {};
       for (const [key, value] of Object.entries(data)) {
@@ -24,6 +26,7 @@ const EmbedConfig = {
         validData[key] = validatedCreationData(value, key);
       }
 
+      console.log(`[EmbedConfig] Creating embed config with valid data:`, validData);
       const embed = await prisma.embed_configs.create({
         data: {
           ...validData,
@@ -34,20 +37,27 @@ const EmbedConfig = {
           createdBy: userId ? Number(userId) : null,
         },
       });
+      console.log(`[EmbedConfig] Successfully created embed config with ID: ${embed.id}`);
 
-      // Create an empty FAQ collection for this embed
-      await prisma.fAQ.create({
-        data: {
+      // Create an empty FAQ collection for this embed using the FAQ model
+      try {
+        console.log(`[EmbedConfig] Attempting to create default FAQ for embed ID: ${embed.id}`);
+        const defaultFaq = await FAQ.create({
           embed_config_id: embed.id,
           question: "Welcome FAQ",
           answer: "This is your first FAQ. You can edit or delete it and add more FAQs as needed."
-        }
-      });
+        });
+        console.log(`[EmbedConfig] Successfully created default FAQ with ID: ${defaultFaq.id}`);
+      } catch (faqError) {
+        console.error(`[EmbedConfig] Error creating default FAQ:`, faqError);
+        // We'll keep the embed even if FAQ creation fails
+        // The user can add FAQs manually later
+      }
 
-      return { embed, message: null };
+      return embed;
     } catch (error) {
-      console.error(error.message);
-      return { embed: null, message: error.message };
+      console.error(`[EmbedConfig] Error creating embed config:`, error);
+      throw error;
     }
   },
 
@@ -107,12 +117,20 @@ const EmbedConfig = {
 
   delete: async function (clause = {}) {
     try {
+      // First delete all related FAQs
+      await prisma.fAQ.deleteMany({
+        where: {
+          embed_config_id: clause.id
+        }
+      });
+
+      // Then delete the embed config
       await prisma.embed_configs.delete({
         where: clause,
       });
       return true;
     } catch (error) {
-      console.error(error.message);
+      console.error(`[EmbedConfig] Error deleting embed config:`, error);
       return false;
     }
   },

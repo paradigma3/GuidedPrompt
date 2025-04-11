@@ -32,7 +32,7 @@ function embeddedEndpoints(app) {
           temperature = null,
           username = null,
         } = reqBody(request);
-        
+
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Content-Type", "text/event-stream");
         response.setHeader("Access-Control-Allow-Origin", "*");

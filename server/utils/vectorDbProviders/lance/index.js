@@ -462,7 +462,7 @@ const LanceDb = {
     const documents = [];
     for (const source of sources) {
       const { text, vector: _v, _distance: _d, ...rest } = source;
-      const metadata = rest.hasOwnProperty("metadata") ? rest.metadata : rest;
+      const metadata = Object.prototype.hasOwnProperty.call(rest, "metadata") ? rest.metadata : rest;
       if (Object.keys(metadata).length > 0) {
         documents.push({
           ...metadata,
@@ -472,6 +472,92 @@ const LanceDb = {
     }
 
     return documents;
+  },
+  addFaqToNamespace: async function (namespace, faq, vector) {
+    const { client } = await this.connect();
+    const exists = await this.namespaceExists(client, namespace);
+    if (!exists) {
+      await client.createTable(namespace, [{
+        id: uuidv4(),
+        vector,
+        ...faq
+      }]);
+      return true;
+    }
+
+    const table = await client.openTable(namespace);
+    await table.add([{
+      id: uuidv4(),
+      vector,
+      ...faq
+    }]);
+    return true;
+  },
+  updateFaqInNamespace: async function (namespace, faq, vector) {
+    const { client } = await this.connect();
+    const exists = await this.namespaceExists(client, namespace);
+    if (!exists) return false;
+
+    const table = await client.openTable(namespace);
+    await table.delete(`faq_id = ${faq.faq_id}`);
+    await table.add([{
+      id: uuidv4(),
+      vector,
+      ...faq
+    }]);
+    return true;
+  },
+  deleteFaqFromNamespace: async function (namespace, faqId) {
+    const { client } = await this.connect();
+    const exists = await this.namespaceExists(client, namespace);
+    if (!exists) return false;
+
+    const table = await client.openTable(namespace);
+    await table.delete(`faq_id = ${faqId}`);
+    return true;
+  },
+  searchFaqs: async function ({
+    namespace,
+    queryVector,
+    similarityThreshold = 0.25,
+    topN = 4
+  }) {
+    const { client } = await this.connect();
+    const exists = await this.namespaceExists(client, namespace);
+    if (!exists) {
+      return {
+        contextTexts: [],
+        sourceDocuments: [],
+        scores: []
+      };
+    }
+
+    const table = await client.openTable(namespace);
+    const response = await table
+      .vectorSearch(queryVector)
+      .distanceType("cosine")
+      .limit(topN)
+      .toArray();
+
+    const result = {
+      contextTexts: [],
+      sourceDocuments: [],
+      scores: []
+    };
+
+    response.forEach((item) => {
+      if (this.distanceToSimilarity(item._distance) < similarityThreshold) return;
+      const { vector: _, ...rest } = item;
+
+      result.contextTexts.push(rest.answer);
+      result.sourceDocuments.push({
+        ...rest,
+        score: this.distanceToSimilarity(item._distance)
+      });
+      result.scores.push(this.distanceToSimilarity(item._distance));
+    });
+
+    return result;
   },
 };
 

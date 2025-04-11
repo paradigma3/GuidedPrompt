@@ -20,6 +20,7 @@
  * @property {number} id
  * @property {string} question
  * @property {string} answer
+ * @property {string} [embedding] - JSON string of the vector embedding
  * @property {string} createdAt
  * @property {string} updatedAt
  * @property {number} embed_config_id

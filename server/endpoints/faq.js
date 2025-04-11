@@ -3,55 +3,57 @@ const { FAQ } = require("../models/faq");
 const { EmbedConfig } = require("../models/embedConfig");
 const { validatedRequest } = require("../utils/middleware/validatedRequest");
 const { flexUserRoleValid, ROLES } = require("../utils/middleware/multiUserProtected");
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const prisma = require("../utils/prisma");
 const { validApiKey } = require("../utils/middleware/validApiKey");
 
 function apiFaqEndpoints(router) {
   if (!router) return;
 
   router.get("/embed-config/:uuid", [validatedRequest, flexUserRoleValid([ROLES.admin])], async (req, res) => {
+    console.log(`[API] GET /embed-config/:uuid - Request for UUID: ${req.params.uuid}`);
     try {
       const { uuid } = req.params;
       const embed = await prisma.embed_configs.findFirst({
         where: { uuid },
       });
       if (!embed) {
+        console.log(`[API] GET /embed-config/:uuid - Embed config not found for UUID: ${uuid}`);
         return res.status(404).json({ error: "Embed config not found" });
       }
+      console.log(`[API] GET /embed-config/:uuid - Found embed config with ID: ${embed.id}`);
       res.json(embed);
     } catch (error) {
-      console.error("Error fetching embed config:", error);
+      console.error(`[API] GET /embed-config/:uuid - Error:`, error);
       res.status(500).json({ error: "Failed to fetch embed config" });
     }
   });
 
   router.get("/embed-faqs/collections", [validatedRequest, flexUserRoleValid([ROLES.admin])], async (req, res) => {
+    console.log(`[API] GET /embed-faqs/collections - Request for FAQ collections`);
     try {
-      const { collections, error } = await FAQ.allCollections();
-      if (error) {
-        return res.status(500).json({ error });
-      }
-      res.status(200).json({ collections });
+      const collections = await FAQ.allCollections();
+      console.log(`[API] GET /embed-faqs/collections - Returning ${collections.length} collections`);
+      res.json({ collections });
     } catch (error) {
-      console.error("Error fetching FAQ collections:", error);
+      console.error(`[API] GET /embed-faqs/collections - Error:`, error);
       res.status(500).json({ error: "Failed to fetch FAQ collections" });
     }
   });
 
   router.get("/embed-faqs/:embedId/faqs", [validatedRequest, flexUserRoleValid([ROLES.admin])], async (req, res) => {
+    console.log(`[API] GET /embed-faqs/:embedId/faqs - Request for embedId: ${req.params.embedId}`);
     try {
       const { embedId } = req.params;
-      const faqs = await prisma.fAQ.findMany({
-        where: { embed_config_id: parseInt(embedId) },
-        include: {
-          suggestions: true,
-          widgets: true,
-        },
-      });
-      res.json({ faqs });
+      const result = await FAQ.all(parseInt(embedId));
+
+      if (!result.success) {
+        return res.status(500).json({ error: result.error });
+      }
+
+      console.log(`[API] GET /embed-faqs/:embedId/faqs - Found ${result.faqs.length} FAQs for embedId: ${embedId}`);
+      res.json({ faqs: result.faqs });
     } catch (error) {
-      console.error("Error fetching FAQs:", error);
+      console.error(`[API] GET /embed-faqs/:embedId/faqs - Error:`, error);
       res.status(500).json({ error: "Failed to fetch FAQs" });
     }
   });
@@ -60,44 +62,43 @@ function apiFaqEndpoints(router) {
     try {
       const { embedId } = req.params;
       const { question, answer } = req.body;
-      const faq = await prisma.fAQ.create({
-        data: {
-          question,
-          answer,
-          embed_config_id: parseInt(embedId),
-        },
+
+      const result = await FAQ.create({
+        question,
+        answer,
+        embed_config_id: parseInt(embedId),
       });
-      res.json({ faq });
+
+      if (!result.success) {
+        return res.status(400).json({ error: result.error });
+      }
+
+      res.json({ faq: result.faq });
     } catch (error) {
       console.error("Error creating FAQ:", error);
-      res.status(500).json({ error: "Failed to create FAQ" });
+      res.status(500).json({ error: error.message || "Failed to create FAQ" });
     }
   });
 
   router.put("/embed-faqs/:embedId/faq/:faqId", [validatedRequest, flexUserRoleValid([ROLES.admin])], async (req, res) => {
     try {
       const { question, answer } = req.body;
-      const faq = await prisma.fAQ.update({
-        where: { id: Number(req.params.faqId) },
-        data: {
-          question,
-          answer,
-        },
-        include: {
-          suggestions: true,
-          widgets: true,
-        },
-      });
-      return res.status(200).json({ faq });
+      const result = await FAQ.update(Number(req.params.faqId), { question, answer });
+
+      if (!result.success) {
+        return res.status(400).json({ error: result.error });
+      }
+
+      return res.status(200).json({ faq: result.faq });
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ error: "Failed to update FAQ" });
+      return res.status(500).json({ error: error.message || "Failed to update FAQ" });
     }
   });
 
   router.delete("/embed-faqs/:embedId/faq/:faqId", [validatedRequest, flexUserRoleValid([ROLES.admin])], async (req, res) => {
     try {
-      await prisma.fAQ.delete({
+      await prisma.FAQ.delete({
         where: { id: Number(req.params.faqId) },
       });
       return res.status(200).json({ success: true });
@@ -137,7 +138,7 @@ function apiFaqEndpoints(router) {
       }
 
       // Return updated FAQ with suggestions
-      const faq = await prisma.fAQ.findUnique({
+      const faq = await prisma.FAQ.findUnique({
         where: { id: Number(faqId) },
         include: {
           suggestions: true,
@@ -157,35 +158,6 @@ function apiFaqEndpoints(router) {
       const { faqId } = req.params;
       const { widgets } = req.body;
 
-      // Validate widgets data
-      if (widgets && widgets.length > 0) {
-        for (const widget of widgets) {
-          if (!widget.type || !widget.label) {
-            return res.status(400).json({ error: "Each widget must have a type and label" });
-          }
-
-          if (widget.type === 'iframe') {
-            if (!widget.url || typeof widget.url !== 'string' || !widget.url.match(/^https?:\/\//)) {
-              return res.status(400).json({ error: "Invalid iframe URL format" });
-            }
-          } else if (widget.type === 'gallery') {
-            if (!Array.isArray(widget.images) || widget.images.length === 0) {
-              return res.status(400).json({ error: "Gallery must have at least one image" });
-            }
-            if (widget.images.length > 6) {
-              return res.status(400).json({ error: "Gallery cannot have more than 6 images" });
-            }
-            for (const imageUrl of widget.images) {
-              if (typeof imageUrl !== 'string' || !imageUrl.match(/^https?:\/\/.*\.(jpg|jpeg|png|gif|webp)$/i)) {
-                return res.status(400).json({ error: "Invalid image URL format" });
-              }
-            }
-          } else {
-            return res.status(400).json({ error: "Invalid widget type" });
-          }
-        }
-      }
-
       // Delete existing widgets - SQLite doesn't support deleteMany
       const existingWidgets = await prisma.widget.findMany({
         where: { faq_id: Number(faqId) }
@@ -196,38 +168,31 @@ function apiFaqEndpoints(router) {
         })
       ));
 
-      // Create new widgets
+      // Create new widgets one by one since SQLite doesn't support createMany
       if (widgets && widgets.length > 0) {
-        await Promise.all(widgets.map(widget => {
-          const widgetData = {
-            type: widget.type,
-            label: widget.label,
-            url: widget.type === 'iframe' ? widget.url : null,
-            images: widget.type === 'gallery' ? JSON.stringify(widget.images) : null,
-            faq_id: Number(faqId)
-          };
-          return prisma.widget.create({ data: widgetData });
-        }));
+        await Promise.all(widgets.map(widget =>
+          prisma.widget.create({
+            data: {
+              type: widget.type,
+              label: widget.label,
+              url: widget.url,
+              images: widget.images ? JSON.stringify(widget.images) : null,
+              faq_id: Number(faqId)
+            }
+          })
+        ));
       }
 
-      // Return the updated FAQ with its widgets
-      const updatedFaq = await prisma.fAQ.findUnique({
+      // Return updated FAQ with widgets
+      const faq = await prisma.FAQ.findUnique({
         where: { id: Number(faqId) },
         include: {
           suggestions: true,
-          widgets: true,
-        },
+          widgets: true
+        }
       });
 
-      // Parse the images field for gallery widgets
-      if (updatedFaq.widgets) {
-        updatedFaq.widgets = updatedFaq.widgets.map(widget => ({
-          ...widget,
-          images: widget.type === 'gallery' && widget.images ? JSON.parse(widget.images) : null
-        }));
-      }
-
-      res.json({ faq: updatedFaq });
+      res.json({ faq });
     } catch (error) {
       console.error("Error updating widgets:", error);
       res.status(500).json({ error: "Failed to update widgets" });

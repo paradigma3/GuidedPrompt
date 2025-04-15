@@ -122,6 +122,7 @@ async function streamChatWithForEmbed(response, params) {
     // Get suggestions and widgets for the most relevant FAQ
     let faqSuggestions = [];
     let faqWidgets = [];
+    let faqContext = "";
 
     if (mostRelevantFaq) {
       console.log('Fetching details for most relevant FAQ:', mostRelevantFaq.faq_id);
@@ -139,6 +140,12 @@ async function streamChatWithForEmbed(response, params) {
       }
       if (faqDetails?.widgets) {
         faqWidgets = faqDetails.widgets;
+      }
+
+      // Add FAQ content as context
+      if (faqDetails) {
+        faqContext = `FAQ Question: ${faqDetails.question}\n`;
+        console.log('Added FAQ context:', faqContext);
       }
     }
 
@@ -175,11 +182,16 @@ async function streamChatWithForEmbed(response, params) {
     const prompt = chatPrompt(embed.workspace);
     const context = contextTexts.join("\n\n");
 
+    // Combine document context with FAQ context
+    const combinedContext = faqContext
+      ? `${context}\n\n${faqContext}`
+      : context;
+
     // Prepare messages for the LLM
     const messages = [
       { role: "system", content: prompt },
       ...chatHistory,
-      { role: "user", content: `Context:\n${context}\n\nQuestion: ${message}` }
+      { role: "user", content: `Context:\n${combinedContext}\n\nQuestion: ${message}` }
     ];
 
     // Check if streaming is enabled for the LLM connector

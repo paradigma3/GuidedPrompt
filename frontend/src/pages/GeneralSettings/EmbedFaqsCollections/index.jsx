@@ -8,6 +8,7 @@ import Sidebar from "@/components/SettingsSidebar";
 import showToast from "@/utils/toast";
 import EmbedFaqCollectionRow from "./EmbedFaqCollectionRow";
 import EmbedArticlesModal from '../EmbedFAQs/EmbedArticlesModal';
+import { baseHeaders } from "@/utils/request";
 
 export default function EmbedFaqsCollections() {
   const { t } = useTranslation();
@@ -20,7 +21,9 @@ export default function EmbedFaqsCollections() {
     async function fetchCollections() {
       setLoading(true);
       try {
-        const response = await fetch('/api/embed-faqs/collections');
+        const response = await fetch('/api/embed-faqs/collections', {
+          headers: baseHeaders()
+        });
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

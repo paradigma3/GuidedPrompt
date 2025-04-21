@@ -20,6 +20,11 @@ const EmbedChats = {
     connection_information = {},
     sessionId,
   }) {
+    console.log('[EmbedChats.new] Creating chat with connection info:', {
+      embedId,
+      sessionId,
+      connection_information
+    });
     try {
       const chat = await prisma.embed_chats.create({
         data: {
@@ -30,9 +35,13 @@ const EmbedChats = {
           session_id: String(sessionId),
         },
       });
+      console.log('[EmbedChats.new] Successfully created chat:', {
+        id: chat.id,
+        connection_info: chat.connection_information
+      });
       return { chat, message: null };
     } catch (error) {
-      console.error(error.message);
+      console.error('[EmbedChats.new] Error creating chat:', error.message);
       return { chat: null, message: error.message };
     }
   },

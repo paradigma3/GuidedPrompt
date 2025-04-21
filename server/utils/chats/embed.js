@@ -12,6 +12,12 @@ const { FAQ } = require("../../models/faq");
 const { processChatWithVectorSearch } = require("./processChat");
 
 async function streamChatWithForEmbed(response, params) {
+  console.log('[streamChatWithForEmbed] Starting with params:', {
+    hasConnection: !!response?.locals?.connection,
+    connection: response?.locals?.connection,
+    sessionId: params?.sessionId || arguments[3], // handle both param styles
+  });
+
   console.log('PARAMS:', params);
   console.log('response:', response.body);
 
@@ -227,6 +233,12 @@ async function streamChatWithForEmbed(response, params) {
       });
 
       // Save the chat to the database with suggestions and widgets
+      // Include username in connection_information if available
+      const connectionInfo = response?.locals?.connection || {};
+      if (options.username) {
+        connectionInfo.username = options.username;
+      }
+
       await EmbedChats.new({
         embedId: embed.id,
         sessionId,
@@ -238,6 +250,7 @@ async function streamChatWithForEmbed(response, params) {
           suggestions: faqSuggestions,
           widgets: faqWidgets
         },
+        connection_information: connectionInfo,
         user: options.username || null,
       });
     } else {
@@ -266,17 +279,29 @@ async function streamChatWithForEmbed(response, params) {
 
       // Save the chat to the database with suggestions and widgets
       if (completeText?.length > 0) {
+        console.log('[streamChatWithForEmbed] Saving chat with connection:', {
+          connection: response?.locals?.connection,
+          sessionId: sessionId
+        });
+
+        // Include username in connection_information if available
+        const connectionInfo = response?.locals?.connection || {};
+        if (options.username) {
+          connectionInfo.username = options.username;
+        }
+
         await EmbedChats.new({
           embedId: embed.id,
           sessionId,
           prompt: message,
           response: {
             text: completeText,
-            sources, // Include sources in the database record
+            sources,
             type: "chat",
             suggestions: faqSuggestions,
             widgets: faqWidgets
           },
+          connection_information: connectionInfo,
           user: options.username || null,
         });
       }

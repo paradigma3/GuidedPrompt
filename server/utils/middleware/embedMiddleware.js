@@ -24,6 +24,10 @@ function setConnectionMeta(request, response, next) {
     host: request.headers?.origin,
     ip: request?.ip,
   };
+  console.log('[setConnectionMeta] Setting connection info:', {
+    host: request.headers?.origin,
+    ip: request?.ip,
+  });
   next();
 }
 

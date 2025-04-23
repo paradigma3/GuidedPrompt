@@ -17,6 +17,13 @@ async function validatedRequest(request, response, next) {
     !process.env.AUTH_TOKEN ||
     !process.env.JWT_SECRET
   ) {
+    if (process.env.NODE_ENV === "development") {
+      console.log(`[API] validatedRequest - Request allowed: Development mode enabled`);
+    } else if (!process.env.AUTH_TOKEN) {
+      console.log(`[API] validatedRequest - Request allowed: No AUTH_TOKEN environment variable set`);
+    } else if (!process.env.JWT_SECRET) {
+      console.log(`[API] validatedRequest - Request allowed: No JWT_SECRET environment variable set`);
+    }
     next();
     return;
   }
@@ -32,6 +39,7 @@ async function validatedRequest(request, response, next) {
   const token = auth ? auth.split(" ")[1] : null;
 
   if (!token) {
+    console.log(`[API] validatedRequest - Request denied: No auth token found in request`);
     response.status(401).json({
       error: "No auth token found.",
     });
@@ -42,6 +50,7 @@ async function validatedRequest(request, response, next) {
   const { p } = decodeJWT(token);
 
   if (p === null || !/\w{32}:\w{32}/.test(p)) {
+    console.log(`[API] validatedRequest - Request denied: Token expired or failed validation`);
     response.status(401).json({
       error: "Token expired or failed validation.",
     });
@@ -59,12 +68,14 @@ async function validatedRequest(request, response, next) {
       bcrypt.hashSync(process.env.AUTH_TOKEN, 10)
     )
   ) {
+    console.log(`[API] validatedRequest - Request denied: Invalid auth credentials`);
     response.status(401).json({
       error: "Invalid auth credentials.",
     });
     return;
   }
 
+  console.log(`[API] validatedRequest - Request allowed: Valid authentication token`);
   next();
 }
 
@@ -73,6 +84,7 @@ async function validateMultiUserRequest(request, response, next) {
   const token = auth ? auth.split(" ")[1] : null;
 
   if (!token) {
+    console.log(`[API] validateMultiUserRequest - Request denied: No auth token found in request`);
     response.status(401).json({
       error: "No auth token found.",
     });
@@ -81,6 +93,7 @@ async function validateMultiUserRequest(request, response, next) {
 
   const valid = decodeJWT(token);
   if (!valid || !valid.id) {
+    console.log(`[API] validateMultiUserRequest - Request denied: Invalid auth token`);
     response.status(401).json({
       error: "Invalid auth token.",
     });
@@ -89,6 +102,7 @@ async function validateMultiUserRequest(request, response, next) {
 
   const user = await User.get({ id: valid.id });
   if (!user) {
+    console.log(`[API] validateMultiUserRequest - Request denied: Invalid auth for user`);
     response.status(401).json({
       error: "Invalid auth for user.",
     });
@@ -96,12 +110,14 @@ async function validateMultiUserRequest(request, response, next) {
   }
 
   if (user.suspended) {
+    console.log(`[API] validateMultiUserRequest - Request denied: User is suspended from system`);
     response.status(401).json({
       error: "User is suspended from system",
     });
     return;
   }
 
+  console.log(`[API] validateMultiUserRequest - Request allowed: Valid user authentication`);
   response.locals.user = user;
   next();
 }

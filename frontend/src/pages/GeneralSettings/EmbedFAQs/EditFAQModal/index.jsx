@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { X } from "@phosphor-icons/react";
-
+import { baseHeaders } from "@/utils/request";
 export default function EditFAQModal({ closeModal, faq, setFaqs, embedId }) {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
@@ -29,7 +29,10 @@ export default function EditFAQModal({ closeModal, faq, setFaqs, embedId }) {
     try {
       const res = await fetch(`/api/embed-faqs/${embedId}/faq/${faq.id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...baseHeaders()
+         },
         body: JSON.stringify({ question, answer }),
       });
 

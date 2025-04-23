@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { X } from "@phosphor-icons/react";
+import { baseHeaders } from "@/utils/request";
 
 export default function NewFAQModal({ closeModal, setFaqs, embedId }) { // Removed useWorkspace, added embedId prop
   const [question, setQuestion] = useState("");
@@ -22,7 +23,10 @@ export default function NewFAQModal({ closeModal, setFaqs, embedId }) { // Remov
     try {
       const res = await fetch(`/api/embed-faqs/${embedId}/faq`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...baseHeaders()
+        },
         body: JSON.stringify({ question, answer }),
       });
 

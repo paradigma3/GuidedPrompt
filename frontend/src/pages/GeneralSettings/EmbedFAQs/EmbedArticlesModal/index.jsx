@@ -20,7 +20,9 @@ export default function EmbedArticlesModal({ isOpen, onClose, embedConfigId }) {
   const fetchArticles = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/embed-faqs/${embedConfigId}/articles`);
+      const response = await fetch(`/api/embed-faqs/${embedConfigId}/articles`, {
+        headers: baseHeaders()
+      });
       if (!response.ok) throw new Error('Failed to fetch articles');
       const fetchedArticles = await response.json();
       setArticles(fetchedArticles || []);
